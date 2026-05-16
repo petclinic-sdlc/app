@@ -1,4 +1,3 @@
-# Multi stage docker image for config server
 # Stage 1 
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
