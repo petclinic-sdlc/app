@@ -5,14 +5,11 @@ FROM maven:3.9.6-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /build
 
-# Copy source code
+# Copy FULL repository (important for multi-module Maven)
 COPY . .
 
-# Copy parent pom from root
-COPY ../pom.xml /build/pom.xml
-
-# Build application
-RUN mvn clean package -DskipTests
+# Build ONLY customers service module
+RUN mvn -pl spring-petclinic-customers-service -am clean package -DskipTests
 
 
 # =========================
@@ -26,12 +23,11 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
 # Copy built JAR from builder stage
-COPY --from=builder /build/target/*.jar app.jar
+COPY --from=builder /build/spring-petclinic-customers-service/target/*.jar app.jar
 
 # Set ownership
 RUN chown appuser:appgroup /app/app.jar
 
-# Use non-root user
 USER appuser
 
 EXPOSE 8081
