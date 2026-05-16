@@ -3,7 +3,7 @@ name: API Gateway CI
 on:
   push:
     branches:
-      - feature/api-gateway-service
+      - feature/docker-api-gateway
     paths:
       - "spring-petclinic-api-gateway/**"
       - ".github/workflows/api-gateway-ci.yml"
