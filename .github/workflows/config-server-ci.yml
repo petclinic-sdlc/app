@@ -15,7 +15,7 @@ on:
       - "spring-petclinic-config-server/**"
 
 jobs:
-  customers-service-ci:
+  config-service-ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,16 +35,16 @@ jobs:
       - name: Build and Test Project
         run: ./mvnw clean test
 
-      # Build only customers-service JAR
+      # Build only config-server JAR
       - name: Build JAR Artifact
-        run: ./mvnw clean package -DskipTests -pl spring-petclinic-customers-service -am
+        run: ./mvnw clean package -DskipTests -pl spring-petclinic-config-server -am
 
       # Build Docker image (ONLY packaging)
       - name: Build Docker Image
         run: |
           docker build \
-          -t petclinic-customers-service:${{ github.sha }} \
-          -f spring-petclinic-customers-service/Dockerfile \
+          -t petclinic-config-server:${{ github.sha }} \
+          -f spring-petclinic-config-server/Dockerfile \
             .
       # Trivy scan
       # - name: Run Trivy Security Scan
@@ -67,6 +67,6 @@ jobs:
       # Tag + Push
       - name: Push Docker Image
         run: |
-          docker tag petclinic-customers-service:${{ github.sha }} \
-            ${{ secrets.DOCKERHUB_USERNAME }}/petclinic-customers-service:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/petclinic-customers-service:${{ github.sha }}
+          docker tag petclinic-config-server:${{ github.sha }} \
+            ${{ secrets.DOCKERHUB_USERNAME }}/petclinic-config-server:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/petclinic-config-server:${{ github.sha }}
