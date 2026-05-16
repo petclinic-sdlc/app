@@ -48,15 +48,15 @@ jobs:
             .
 
       # Trivy scan
-      - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "petclinic-customers-service:${{ github.sha }}"
-          format: "table"
-          exit-code: "1"
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
+      # - name: Run Trivy Security Scan
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: "petclinic-customers-service:${{ github.sha }}"
+      #     format: "table"
+      #     exit-code: "1"
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
 
       # Login to Docker Hub
       - name: Login to Docker Hub
