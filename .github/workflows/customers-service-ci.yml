@@ -18,9 +18,28 @@ jobs:
   customers-service-ci:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: spring-petclinic-customers-service
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "17"
+        cache: maven
+    
+    - name: Grant execute permission for mvnw
+      run: chmod +x ./mvnw
+    
+    - name: Run Unit and Integration Tests
+      run: ./mvnw test -f spring-petclinic-customers-service/pom.xml
+    
+    - name: Build JAR Artifact
+      run: ./mvnw clean package -DskipTests -f spring-petclinic-customers-service/pom.xml
+    
+    - name: Build Docker Image
+      run: docker build -t petclinic-customers-service:${{ github.sha }} ./spring-petclinic-customers-service
 
     steps:
       # Checkout source code
