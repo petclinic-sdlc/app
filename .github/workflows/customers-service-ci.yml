@@ -37,11 +37,11 @@ jobs:
 
       # Run tests
       - name: Run Unit and Integration Tests
-        run: ./mvnw test
+        run: ./mvnw test -f pom.xml
 
       # Build JAR
       - name: Build JAR Artifact
-        run: ./mvnw clean package -DskipTests
+        run: ./mvnw clean package -DskipTests -f pom.xml
 
       # Build Docker image
       - name: Build Docker Image
