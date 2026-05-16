@@ -31,22 +31,18 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Make mvnw executable
-      - name: Grant execute permission for mvnw
-        run: chmod +x mvnw
+      # Build & Test (ROOT level)
+      - name: Build and Test Project
+        run: ./mvnw clean test
 
-      # Run tests
-      - name: Run Unit and Integration Tests
-        run: ./mvnw test -f pom.xml
-
-      # Build JAR
+      # Build only customers-service JAR
       - name: Build JAR Artifact
-        run: ./mvnw clean package -DskipTests -f pom.xml
+        run: ./mvnw clean package -DskipTests -pl spring-petclinic-customers-service -am
 
-      # Build Docker image
+      # Build Docker image (ONLY packaging)
       - name: Build Docker Image
         run: |
-          docker build -t petclinic-customers-service:${{ github.sha }} spring-petclinic-customers-service
+          docker build -t petclinic-customers-service:${{ github.sha }} .
 
       # Trivy scan
       - name: Run Trivy Security Scan
@@ -66,7 +62,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Tag and push image
+      # Tag + Push
       - name: Push Docker Image
         run: |
           docker tag petclinic-customers-service:${{ github.sha }} \
