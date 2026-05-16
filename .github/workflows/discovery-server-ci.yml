@@ -39,12 +39,12 @@ jobs:
       - name: Build JAR Artifact
         run: ./mvnw clean package -DskipTests -pl spring-petclinic-discovery-server -am
 
-      # Build Docker image (ONLY packaging)
+      # Build Docker image
       - name: Build Docker Image
         run: |
           docker build \
           -t petclinic-discovery-server:${{ github.sha }} \
-          -f spring-petclinic-dicovery-server/Dockerfile \
+          -f spring-petclinic-discovery-server/Dockerfile \
             .
       # Trivy scan
       # - name: Run Trivy Security Scan
