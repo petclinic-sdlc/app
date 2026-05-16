@@ -1,0 +1,41 @@
+name: Config Server CI
+
+on:
+  push:
+    branches:
+      - feature/docker-config-server
+    paths:
+      - "spring-petclinic-config-server/**"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "spring-petclinic-config-server/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Build & Test
+        run: ./mvnw clean test -pl spring-petclinic-config-server -am
+
+      - name: Build JAR
+        run: ./mvnw clean package -DskipTests -pl spring-petclinic-config-server -am
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t config-server:${{ github.sha }} \
+            -f spring-petclinic-config-server/Dockerfile \
+            .
