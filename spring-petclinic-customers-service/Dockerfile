@@ -1,6 +1,4 @@
-# =========================
-# Stage 1: Build Stage
-# =========================
+# Stage 1: Build Stage 
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /build
@@ -12,9 +10,7 @@ COPY . .
 RUN mvn -pl spring-petclinic-customers-service -am clean package -DskipTests
 
 
-# =========================
 # Stage 2: Runtime Stage
-# =========================
 FROM eclipse-temurin:17-jdk-alpine
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
