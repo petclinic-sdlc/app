@@ -43,7 +43,7 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build \
-          -t petclinic-vis  its-service:${{ github.sha }} \
+          -t petclinic-visits-service:${{ github.sha }} \
           -f spring-petclinic-visits-service/Dockerfile \
             .
       # Trivy scan
